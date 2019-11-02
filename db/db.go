@@ -4,6 +4,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
+	"os"
 )
 
 var db *gorm.DB
@@ -24,7 +25,7 @@ func GetDB() *gorm.DB {
 		newDb := connect()
 		newDb.DB().SetMaxIdleConns(4)
 		newDb.DB().SetMaxOpenConns(20)
-		newDb.LogMode(true)
+		newDb.LogMode(os.Getenv("GIN_MODE") != "release")
 		db = newDb
 	}
 	return db
